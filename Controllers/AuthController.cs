@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AirlineTicketingApi.DTOs;
+using AirlineTicketingApi.Data; 
 
 namespace AirlineTicketingApi.Controllers
 {
@@ -12,23 +13,30 @@ namespace AirlineTicketingApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context; 
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, ApplicationDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDto request)
         {
-            // hardcoded Admin check. 
-            // In a real app, you would check the database for the user's password hash.
-            if (request.Username == "admin" && request.Password == "admin123")
+            
+            var user = _context.Users.FirstOrDefault(u => 
+                u.FullName == request.Username && 
+                u.PasswordHash == request.Password);
+
+            
+            if (user != null)
             {
-                var token = GenerateJwtToken(request.Username, "Admin");
+                var token = GenerateJwtToken(user.FullName, user.Role);
                 return Ok(new { Token = token });
             }
 
+            
             return Unauthorized(new { Message = "Invalid credentials" });
         }
 
@@ -56,6 +64,4 @@ namespace AirlineTicketingApi.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-
-    
 }

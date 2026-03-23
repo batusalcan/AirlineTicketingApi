@@ -26,6 +26,17 @@ namespace AirlineTicketingApi.Data
                 .HasOne(t => t.Passenger)
                 .WithMany(u => u.Tickets)
                 .HasForeignKey(t => t.PassengerId);
+
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    Id = 1,
+                    FullName = "admin",
+                    Email = "admin@airline.com",
+                    PasswordHash = "admin123",
+                    Role = "Admin"
+                }
+            );    
         }
     }
 }
