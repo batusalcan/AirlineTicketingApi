@@ -72,6 +72,21 @@ _(Insert a screenshot/link to your Data Model / ER Diagram here)_
 
 ---
 
+## 🧪 How to Test API Gateway Rate Limiting
+
+Because the Azure APIM "Consumption" tier does not provide a built-in Developer Portal, the Swagger UI is hosted directly on the backend App Service. Testing through the deployed Swagger UI will bypass the API Gateway and hit the backend directly.
+
+To properly test the Rate Limiting rule enforced by the Gateway, please send requests directly to the APIM endpoint via tools like **Postman** or **cURL**.
+
+- **Gateway URL:** `https://batu-airline-gateway.azure-api.net/api/v1/flight`
+- **Required Header:** `Ocp-Apim-Subscription-Key: <PROVIDED_IN_SUBMISSION_NOTES>`
+
+> 🔒 **Security Note:** To adhere to security best practices and prevent unauthorized access or cloud billing spikes from automated scrapers, the API Gateway Primary Subscription Key is intentionally omitted from this public GitHub repository. **I have provided the active key directly in my assignment submission notes.** Please feel free to request it if needed.
+
+**Test Scenario:** Send a basic `GET` request to the Gateway URL. After the 3rd request within a 5-minute window, the Gateway will intercept the call and return a `429 Too Many Requests` status, successfully shielding the backend infrastructure.
+
+---
+
 ## 🚀 Deliverables & Links
 
 - **Deployed Swagger URL:** *https://batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net/swagger/index.html*
