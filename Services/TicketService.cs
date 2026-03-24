@@ -48,8 +48,19 @@ namespace AirlineTicketingApi.Services
             
             _context.Tickets.Add(ticket);
             
-            // This saves both the new user, the new ticket, and the updated flight capacity at the exact same time
-            await _context.SaveChangesAsync(); 
+            try
+            {
+                // This saves both the new user, the new ticket, and the updated flight capacity at the exact same time
+                await _context.SaveChangesAsync(); 
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                // If two people try to take the last ticket at the same millisecond, one of them will get this mistake
+                return new BuyTicketResponseDto 
+                { 
+                    TransactionStatus = "Error: High traffic concurrent request. The seat was modified by another user just now. Please try again." 
+                };
+            }
 
             return new BuyTicketResponseDto 
             { 
