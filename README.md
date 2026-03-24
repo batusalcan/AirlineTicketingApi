@@ -8,6 +8,21 @@
 
 This project is a RESTful Web API built with **.NET 8** to serve as the backend for a high-traffic airline ticketing system. The API allows administrators to upload flight schedules, and enables passengers to query flights, buy tickets, and check in. The system is designed with enterprise-grade architectural patterns, prioritizing scalability, security, and maintainability.
 
+## 🌐 API Endpoints Summary
+
+For detailed request/response schemas, please refer to the Deployed Swagger UI.
+
+| HTTP Method | Endpoint                    | Description                                                | Auth Required |
+| :---------- | :-------------------------- | :--------------------------------------------------------- | :-----------: |
+| `POST`      | `/api/v1/auth/login`        | Authenticates a user and returns a JWT Bearer token        |      ❌       |
+| `POST`      | `/api/v1/flight`            | Adds a single flight to the airline schedule               |  ✅ (Admin)   |
+| `POST`      | `/api/v1/flight/upload`     | Batch uploads flights via a .csv file (Strategy Pattern)   |  ✅ (Admin)   |
+| `GET`       | `/api/v1/flight`            | Queries available flights with paging and capacity filters |      ❌       |
+| `POST`      | `/api/v1/ticket/buy`        | Buys a ticket and safely decreases flight capacity         |      ✅       |
+| `POST`      | `/api/v1/ticket/checkin`    | Assigns a sequential seat number to a passenger            |      ❌       |
+| `GET`       | `/api/v1/ticket/passengers` | Retrieves a paginated list of passengers for a flight      |      ✅       |
+| `GET`       | `/api/v1/health`            | Infrastructure monitoring endpoint                         |      ❌       |
+
 ## ☁️ Cloud Infrastructure & Deployment
 
 To demonstrate a production-ready environment, the entire system has been deployed to the Microsoft Azure cloud ecosystem:
@@ -113,6 +128,16 @@ erDiagram
 | **Rate Limiting (3 calls/day)** | Implemented flawlessly at the infrastructure level using **Azure API Management (APIM)** rather than polluting the application code.<br><br>🛑 **Architectural Note (Cloud Provider Constraint):** While the requirement specifies a daily limit (86400 seconds), Azure's serverless "Consumption" tier restricts the stateful rate-limit memory to a maximum of **300 seconds** (5 minutes). As an engineering decision to avoid unnecessary cloud billing while still proving the architectural concept, the policy is actively deployed as `3 calls per 300 seconds`. This fully demonstrates the Gateway Rate Limiting pattern in a live cloud environment. |
 
 ---
+
+## ⚠️ Issues Encountered & Resolutions
+
+During the development and cloud deployment phases, a few architectural challenges were encountered and resolved:
+
+1. **Azure API Gateway (Consumption Tier) State Limits:** \* **Issue:** The midterm required rate limiting to "3 calls per day" (86400 seconds). However, Azure API Management's serverless "Consumption" tier restricts stateful rate-limit tracking to a maximum of 5 minutes (300 seconds).
+   - **Resolution:** To fully demonstrate the API Gateway Rate Limiting pattern without incurring expensive cloud billing on premium tiers, the policy was successfully deployed and tested as `3 calls per 300 seconds`.
+2. **High-Concurrency Data Integrity (Race Conditions):**
+   - **Issue:** Under heavy load testing, if multiple users attempted to buy the very last ticket at the exact same millisecond, the standard logic would oversell the flight, pushing the capacity into negative numbers (e.g., `-1`).
+   - **Resolution:** Implemented Entity Framework Core's **Optimistic Concurrency Control** (`[ConcurrencyCheck]`). The database now securely rejects overlapping requests, returning a graceful handled error to the user rather than corrupting the data.
 
 ## 🧪 How to Test API Gateway Rate Limiting
 
