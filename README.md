@@ -65,7 +65,40 @@ In a high-traffic environment, if a flight has exactly 1 seat left and multiple 
   - `User`: Stores passenger details and roles.
   - `Ticket`: Acts as the junction entity mapping a `User` to a `Flight`, storing specific generated identifiers and assigned seat numbers.
 
-_(Insert a screenshot/link to your Data Model / ER Diagram here)_
+### 📊 Entity-Relationship (ER) Diagram
+
+```mermaid
+erDiagram
+    USER ||--o{ TICKET : "purchases / owns"
+    FLIGHT ||--o{ TICKET : "contains"
+
+    USER {
+        int Id PK
+        string FullName
+        string Role
+        string PasswordHash
+    }
+
+    FLIGHT {
+        int Id PK
+        string FlightNumber
+        DateTime DateFrom
+        DateTime DateTo
+        string AirportFrom
+        string AirportTo
+        int Duration
+        int Capacity
+    }
+
+    TICKET {
+        int Id PK
+        string TicketNumber
+        int SeatNumber
+        bool IsCheckedIn
+        int UserId FK
+        int FlightId FK
+    }
+```
 
 ---
 
@@ -116,3 +149,7 @@ To properly test the Rate Limiting rule enforced by the Gateway, please send req
    dotnet build
    dotnet run
    ```
+
+```
+
+```
