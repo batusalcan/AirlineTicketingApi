@@ -18,6 +18,7 @@ namespace AirlineTicketingApi.DTOs
         public string AirportFrom { get; set; } = string.Empty;
         public string AirportTo { get; set; } = string.Empty;
         public int NumberOfPeople { get; set; }
+        public bool IsRoundTrip { get; set; }
     }
 
     public class FlightResponseDto
