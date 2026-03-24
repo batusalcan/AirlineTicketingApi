@@ -17,7 +17,14 @@ namespace AirlineTicketingApi.Controllers
             _flightService = flightService;
         }
 
-        // POST: api/v1/flight
+        /// <summary>
+        /// Adds a single flight to the airline schedule.
+        /// </summary>
+        /// <remarks>
+        /// This endpoint requires Authentication (Admin token).
+        /// </remarks>
+        /// <param name="request">Flight details including origin, destination, duration, and capacity.</param>
+        /// <returns>Returns the transaction status.</returns>
         [Authorize] 
         [HttpPost]
         public async Task<IActionResult> AddFlight([FromBody] AddFlightRequestDto request)
@@ -30,7 +37,19 @@ namespace AirlineTicketingApi.Controllers
             return Ok(result); // Returns a 200 success
         }
 
-        // GET: api/v1/flight
+        /// <summary>
+        /// Queries available flights based on origin, destination, dates, and required capacity.
+        /// </summary>
+        /// <remarks>
+        /// **Midterm Requirements:**
+        /// - Flights that have no seats (Capacity &lt; NumberOfPeople) are NOT listed.
+        /// - Supports Paging with a default size of 10.
+        /// - Rate Limiting: Limit calls to 3 per day (Handled via API Gateway).
+        /// </remarks>
+        /// <param name="request">Query parameters including dates and number of people.</param>
+        /// <param name="pageNumber">Page index (default is 1).</param>
+        /// <param name="pageSize">Page size (default is 10).</param>
+        /// <returns>A paginated list of available flights.</returns>
         [HttpGet]
         public async Task<IActionResult> QueryFlight([FromQuery] QueryFlightRequestDto request, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
@@ -39,7 +58,16 @@ namespace AirlineTicketingApi.Controllers
             return Ok(result);
         }
 
-        // POST: api/v1/flight/upload
+        /// <summary>
+        /// Adds multiple flights in batch via a .csv file upload.
+        /// </summary>
+        /// <remarks>
+        /// Implements the Strategy Pattern for file parsing. The CSV file must contain the fields: 
+        /// Flight number, date-from, date-to, airport-from, airport-to, duration, capacity.
+        /// Requires Authentication.
+        /// </remarks>
+        /// <param name="file">The .csv file containing flight schedules.</param>
+        /// <returns>File processes status.</returns>
         [Authorize] 
         [HttpPost("upload")]
         public async Task<IActionResult> UploadFlights(IFormFile file)

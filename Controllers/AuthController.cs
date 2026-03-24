@@ -21,6 +21,15 @@ namespace AirlineTicketingApi.Controllers
             _context = context;
         }
 
+
+        /// <summary>
+        /// Authenticates a user and generates a JWT Bearer Token.
+        /// </summary>
+        /// <remarks>
+        /// Validates credentials against the database. Use the generated token to authorize other endpoints.
+        /// </remarks>
+        /// <param name="request">Username and password</param>
+        /// <returns>A JWT Token</returns>
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDto request)
         {
