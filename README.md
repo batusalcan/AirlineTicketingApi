@@ -15,6 +15,7 @@ To demonstrate a production-ready environment, the entire system has been deploy
 - **API Gateway (Azure APIM):** All incoming traffic is securely routed through **Azure API Management**, acting as a reverse proxy. This offloads cross-cutting concerns like Rate Limiting and request filtering from the backend, preventing unnecessary server load.
 - **API Hosting:** Deployed to **Azure App Service**, providing a scalable and fully managed web server environment.
 - **Database Hosting:** Migrated from a local environment to **Azure Database for MySQL Flexible Server**. The API securely communicates with this cloud database, ensuring data persistence and high availability.
+- **Health Monitoring:** Implemented an `/api/v1/health` endpoint using .NET's native HealthChecks. This allows cloud load balancers and API Gateways to continuously monitor the API's heartbeat and uptime in a production environment.
 
 ## 🏛️ Architectural Decisions & Design Patterns
 
@@ -43,6 +44,10 @@ Entity Framework (EF) Core is utilized as the ORM. The `DbSet<T>` properties ins
 ### 5. Dependency Injection (Inversion of Control)
 
 ASP.NET Core's built-in DI container is used extensively. Services and parsers are registered in `Program.cs` with Scoped lifecycles, ensuring seamless testability and loose coupling.
+
+### 6. Global Exception Handling (Middleware)
+
+To ensure the API never leaks sensitive stack traces or crashes unexpectedly, a custom `GlobalExceptionMiddleware` was implemented. This acts as a catch-all safety net for the entire HTTP pipeline, ensuring that any unhandled exceptions are gracefully intercepted and returned to the client as a standardized, clean `500 Internal Server Error` JSON response.
 
 ---
 
