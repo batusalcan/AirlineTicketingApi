@@ -1,0 +1,96 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/flight",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5207
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/flight",
+      "UpstreamHttpMethod": ["GET"],
+      "SwaggerKey": "airline",
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1d",
+        "PeriodTimespan": 86400,
+        "Limit": 3
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/flight/upload",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5207
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/flight/upload",
+      "UpstreamHttpMethod": ["POST"],
+      "SwaggerKey": "airline"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/flight",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5207
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/flight",
+      "UpstreamHttpMethod": ["POST"],
+      "SwaggerKey": "airline"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/ticket/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5207
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/ticket/{everything}",
+      "UpstreamHttpMethod": ["GET", "POST"],
+      "SwaggerKey": "airline"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "127.0.0.1",
+          "Port": 5207
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/v1/auth/login",
+      "UpstreamHttpMethod": ["POST"],
+      "SwaggerKey": "airline"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "airline",
+      "Config": [
+        {
+          "Name": "Airline API Documentation",
+          "Version": "v1",
+          "Url": "http://127.0.0.1:5207/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5055",
+    "RateLimitOptions": {
+      "ClientIdHeader": "Host",
+      "QuotaExceededMessage": "API calls quota exceeded! maximum admitted 3 per 1d.",
+      "HttpStatusCode": 429
+    }
+  }
+}
