@@ -31,7 +31,10 @@
       ],
       "UpstreamPathTemplate": "/gateway/v1/flight/upload",
       "UpstreamHttpMethod": ["POST"],
-      "SwaggerKey": "airline"
+      "SwaggerKey": "airline",
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v1/flight",
@@ -44,7 +47,10 @@
       ],
       "UpstreamPathTemplate": "/gateway/v1/flight",
       "UpstreamHttpMethod": ["POST"],
-      "SwaggerKey": "airline"
+      "SwaggerKey": "airline",
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v1/ticket/{everything}",
@@ -57,7 +63,10 @@
       ],
       "UpstreamPathTemplate": "/gateway/v1/ticket/{everything}",
       "UpstreamHttpMethod": ["GET", "POST"],
-      "SwaggerKey": "airline"
+      "SwaggerKey": "airline",
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     },
     {
       "DownstreamPathTemplate": "/api/v1/auth/login",
@@ -70,7 +79,10 @@
       ],
       "UpstreamPathTemplate": "/gateway/v1/auth/login",
       "UpstreamHttpMethod": ["POST"],
-      "SwaggerKey": "airline"
+      "SwaggerKey": "airline",
+      "RateLimitOptions": {
+        "EnableRateLimiting": false
+      }
     }
   ],
   "SwaggerEndPoints": [
