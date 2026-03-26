@@ -2,11 +2,11 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/api/v1/flight",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": 5207
+          "Host": "batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/v1/flight",
@@ -22,11 +22,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/flight/upload",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": 5207
+          "Host": "batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/v1/flight/upload",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/flight",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": 5207
+          "Host": "batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/v1/flight",
@@ -54,11 +54,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/ticket/{everything}",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": 5207
+          "Host": "batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/v1/ticket/{everything}",
@@ -70,11 +70,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/v1/auth/login",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "127.0.0.1",
-          "Port": 5207
+          "Host": "batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/v1/auth/login",
@@ -92,13 +92,13 @@
         {
           "Name": "Airline API Documentation",
           "Version": "v1",
-          "Url": "http://127.0.0.1:5207/swagger/v1/swagger.json"
+          "Url": "https://batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net/swagger/v1/swagger.json"
         }
       ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5055",
+    "BaseUrl": "https://batuhan-airline-gateway-a7bse6gnahawebb4.italynorth-01.azurewebsites.net",
     "RateLimitOptions": {
       "ClientIdHeader": "Host",
       "QuotaExceededMessage": "API calls quota exceeded! maximum admitted 3 per 1d.",
