@@ -143,7 +143,7 @@ Send a `GET` request (via browser, Postman, or cURL) directly to the deployed Ga
 
 As per the midterm requirements, a comprehensive load testing simulation was conducted using **k6** to evaluate the system's performance under heavy concurrent usage.
 
-![k6 Load Test Results](load-test-results.jpg)
+![Image](https://github.com/user-attachments/assets/a1eb3176-1d51-4a5d-8aac-b3d73514a2f6)
 
 #### 1. Endpoints Tested
 
