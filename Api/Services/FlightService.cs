@@ -44,28 +44,38 @@ namespace AirlineTicketingApi.Services
             }
         }
 
-        public async Task<IEnumerable<FlightResponseDto>> QueryFlightsAsync(QueryFlightRequestDto request, int pageNumber, int pageSize)
+      public async Task<IEnumerable<FlightResponseDto>> QueryFlightsAsync(QueryFlightRequestDto request, int pageNumber, int pageSize)
+{
+    
+    var query = _context.Flights
+        .Where(f => f.Capacity >= request.NumberOfPeople && 
+                    (
+                        
+                        (f.AirportFrom == request.AirportFrom &&
+                         f.AirportTo == request.AirportTo &&
+                         f.DateFrom.Date == request.DateFrom.Date)
+                        ||
+                        
+                        (request.IsRoundTrip &&
+                         f.AirportFrom == request.AirportTo &&     
+                         f.AirportTo == request.AirportFrom &&    
+                         f.DateFrom.Date == request.DateTo.Date)    
+                    ));
+
+    
+    var flights = await query
+        .OrderBy(f => f.DateFrom) 
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize)
+        .Select(f => new FlightResponseDto
         {
-            // The logic: Filter by airports, dates, and crucially: Capacity MUST be >= NumberOfPeople
-            var query = _context.Flights
-                .Where(f => f.AirportFrom == request.AirportFrom &&
-                            f.AirportTo == request.AirportTo &&
-                            f.DateFrom.Date == request.DateFrom.Date &&
-                            f.Capacity >= request.NumberOfPeople);
+            FlightNumber = f.FlightNumber,
+            Duration = f.Duration
+        })
+        .ToListAsync();
 
-            // Implement Paging (size of 10)
-            var flights = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(f => new FlightResponseDto
-                {
-                    FlightNumber = f.FlightNumber,
-                    Duration = f.Duration
-                })
-                .ToListAsync();
-
-            return flights;
-        }
+    return flights;
+}
 
         public async Task<StatusResponseDto> AddFlightsFromFileAsync(Stream fileStream)
     {
