@@ -174,7 +174,7 @@ Under simulated load, the API successfully maintained 100% data integrity, provi
 ## 🚀 Deliverables & Links
 
 - **Core API Swagger UI:** [Click to view Swagger](https://batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net/swagger/index.html) _(Use this to explore schemas and endpoint documentation)_
-- **Live API Gateway Base URL:** `https://batuhan-airline-gateway-a7bse6gnahawebb4.italynorth-01.azurewebsites.net` _(All traffic and Rate Limiting testing should be directed here)_
+- **Live API Gateway Base URL:** `https://batu-airline-gateway-final-d0hbhnc6c8fadgee.italynorth-01.azurewebsites.net/swagger/index.html` _(All traffic and Rate Limiting testing should be directed here)_
 - **Load Test Results:** See the _Load Test Results & Analysis_ section above and the included screenshot in the repo.
 - **Project Presentation Video:** _(Link to Google Drive / YouTube will be added)_
 

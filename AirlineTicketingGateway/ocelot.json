@@ -98,7 +98,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://batuhan-airline-gateway-a7bse6gnahawebb4.italynorth-01.azurewebsites.net",
+    "BaseUrl": "batu-airline-gateway-final-d0hbhnc6c8fadgee.italynorth-01.azurewebsites.net",
     "RateLimitOptions": {
       "ClientIdHeader": "Host",
       "QuotaExceededMessage": "API calls quota exceeded! maximum admitted 3 per 1d.",
