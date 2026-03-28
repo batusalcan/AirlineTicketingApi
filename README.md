@@ -166,6 +166,8 @@ During the development and cloud deployment phases, several real-world architect
 
 As per the midterm requirements, a comprehensive load testing simulation was conducted using **k6** to evaluate the system's performance under heavy concurrent usage.
 
+![Image](https://github.com/user-attachments/assets/a1eb3176-1d51-4a5d-8aac-b3d73514a2f6)
+
 #### 1\. Endpoints Tested
 
 - `POST /api/v1/ticket/buy`: Tested to evaluate transactional integrity and Race Condition prevention under high traffic.
