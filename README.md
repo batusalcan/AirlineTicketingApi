@@ -201,7 +201,7 @@ However, the high p95 response time (23.27s) reveals a significant bottleneck at
 
 - **Primary API Gateway Swagger (Main Entry Point):** [Gateway Swagger UI](https://batu-airline-gateway-final-d0hbhnc6c8fadgee.italynorth-01.azurewebsites.net/swagger/index.html) _(All traffic, round-trip queries, and Rate Limiting testing should be directed here)_
 - **Core API Swagger (Backend Logic):** [Core API Swagger UI](https://batu-airline-api-argehsbgendkhzb3.italynorth-01.azurewebsites.net/swagger/index.html) _(Hidden behind the gateway, handles the core business logic)_
-- **Project Presentation Video:** _(Insert your YouTube/Drive link here before submitting)_
+- **Project Presentation Video:** [Presentation Video](https://youtu.be/QguAcbxO9xg)
 
 ---
 
