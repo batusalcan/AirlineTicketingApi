@@ -29,13 +29,12 @@ For detailed request/response schemas, please refer to the Deployed Swagger UI.
 | HTTP Method | Endpoint                    | Description                                                       | Auth Required |
 | :---------- | :-------------------------- | :---------------------------------------------------------------- | :-----------: |
 | `POST`      | `/api/v1/auth/login`        | Authenticates a user and returns a JWT Bearer token               |      ❌       |
-| `POST`      | `/api/v1/flight`            | Adds a single flight to the airline schedule                      |  ✅ (Admin)   |
-| `POST`      | `/api/v1/flight/upload`     | Batch uploads flights via a .csv file (Strategy Pattern)          |  ✅ (Admin)   |
+| `POST`      | `/api/v1/flight`            | Adds a single flight to the airline schedule                      |      ✅       |
+| `POST`      | `/api/v1/flight/upload`     | Batch uploads flights via a .csv file (Strategy Pattern)          |      ✅       |
 | `GET`       | `/api/v1/flight`            | Queries flights with paging, capacity, and **Round-Trip** filters |      ❌       |
 | `POST`      | `/api/v1/ticket/buy`        | Buys a ticket and safely decreases flight capacity                |      ✅       |
 | `POST`      | `/api/v1/ticket/checkin`    | Assigns a sequential seat number to a passenger                   |      ❌       |
 | `GET`       | `/api/v1/ticket/passengers` | Retrieves a paginated list of passengers for a flight             |      ✅       |
-| `GET`       | `/api/v1/health`            | Infrastructure monitoring endpoint                                |      ❌       |
 
 ## ☁️ Cloud Infrastructure & Deployment
 
@@ -44,7 +43,7 @@ To demonstrate a production-ready environment, the backend system has been deplo
 - **API Gateway (Ocelot) - Primary Entry Point:** A dedicated .NET-based **Ocelot API Gateway** project acts as the primary entry point. It securely routes incoming traffic to the Azure-hosted backend and seamlessly handles cross-cutting concerns such as Rate Limiting. **(Deployed to Azure App Service)**
 - **Core API Hosting:** The backend logic API is deployed to a separate **Azure App Service**, providing a scalable and fully managed web server environment hidden behind the Gateway.
 - **Database Hosting:** Migrated from a local environment to **Azure Database for MySQL Flexible Server**. The API securely communicates with this cloud database, ensuring data persistence and high availability.
-- **Health Monitoring (Observability):** Implemented an `/api/v1/health` endpoint using .NET's native `AddHealthChecks()`. This provides a standardized endpoint for cloud load balancers and monitoring tools to verify the operational status of the API continuously.
+- **Health Monitoring (Observability):** Implemented an `/api/v1/health` endpoint using .NET's native `AddHealthChecks()`. This provides a standardized infrastructure endpoint for cloud load balancers and monitoring tools to verify operational status continuously. _(Note: As this is an internal infrastructure endpoint and not a consumer-facing business requirement, it is intentionally omitted from the Swagger UI)._
 
 ## 🏗️ N-Layered Architecture Structure
 
@@ -136,14 +135,15 @@ erDiagram
 
 ## ✅ Midterm Requirements & Assumptions
 
-| Feature                         | Implementation Notes                                                                                                                                                                                           |
-| :------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Authentication**              | Implemented using **JWT Bearer Tokens**. Endpoints like adding flights and buying tickets are secured with the `[Authorize]` attribute.                                                                        |
-| **Paging**                      | Implemented on `Query Flight` and `Passenger List` endpoints with a default page size of 10.                                                                                                                   |
-| **Capacity Management**         | Handled transactionally. When a ticket is bought, flight capacity is decreased. If capacity is 0, the API returns a "Sold out" response. Protected against race conditions via EF Core Optimistic Concurrency. |
-| **Round-Trip Query Logic**      | Implemented dynamic LINQ filtering. If `IsRoundTrip` is selected, the API intelligently reverses the origin/destination airports and matches the return dates within a single, optimized database query.       |
-| **Seat Assignment**             | The `Check-In` endpoint automatically generates and assigns a sequential seat number to the passenger using database aggregations.                                                                             |
-| **Rate Limiting (3 calls/day)** | Implemented flawlessly at the gateway level using **Ocelot API Gateway**. A strict daily limit of 3 calls per day (86400 seconds) is enforced natively based on the Host client ID.                            |
+| Feature                                      | Implementation Notes                                                                                                                                                                                                                                                                                                                                                                     |
+| :------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Business Model Assumption (B2B / Agency)** | **Designed with an Agency/Ticket Office model.** The system assumes authorized personnel (Admin/Agent) log in to process transactions on behalf of customers. Therefore, the "Buy Ticket" endpoint expects the passenger's name in the request body, eliminating the need for a separate "Customer" login role while fulfilling the "Authentication: YES" midterm requirement perfectly. |
+| **Authentication**                           | Implemented using **JWT Bearer Tokens**. Endpoints like adding flights and buying tickets are secured with the `[Authorize]` attribute based on the agency model assumption.                                                                                                                                                                                                             |
+| **Paging**                                   | Implemented on `Query Flight` and `Passenger List` endpoints with a default page size of 10.                                                                                                                                                                                                                                                                                             |
+| **Capacity Management**                      | Handled transactionally. When a ticket is bought, flight capacity is decreased. If capacity is 0, the API returns a "Sold out" response. Protected against race conditions via EF Core Optimistic Concurrency.                                                                                                                                                                           |
+| **Round-Trip Query Logic**                   | Implemented dynamic LINQ filtering. If `IsRoundTrip` is selected, the API intelligently reverses the origin/destination airports and matches the return dates within a single, optimized database query.                                                                                                                                                                                 |
+| **Seat Assignment**                          | The `Check-In` endpoint automatically generates and assigns a sequential seat number to the passenger using database aggregations.                                                                                                                                                                                                                                                       |
+| **Rate Limiting (3 calls/day)**              | Implemented flawlessly at the gateway level using **Ocelot API Gateway**. A strict daily limit of 3 calls per day (86400 seconds) is enforced natively based on the Host client ID.                                                                                                                                                                                                      |
 
 ---
 
@@ -165,8 +165,6 @@ During the development and cloud deployment phases, several real-world architect
 ## 📈 Load Test Results & Analysis
 
 As per the midterm requirements, a comprehensive load testing simulation was conducted using **k6** to evaluate the system's performance under heavy concurrent usage.
-
-![Image](https://github.com/user-attachments/assets/a1eb3176-1d51-4a5d-8aac-b3d73514a2f6)
 
 #### 1\. Endpoints Tested
 
