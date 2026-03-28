@@ -159,6 +159,8 @@ During the development and cloud deployment phases, several real-world architect
     - **Resolution:** Cleaned the deployment artifacts and downgraded Ocelot to a verified `.NET 8`-compatible stable version (`23.4.3`), which completely stabilized the gateway pipeline.
 4.  **High-Traffic Race Conditions:** Standard database updates caused data corruption (negative capacities) when multiple concurrent load-test users attempted to buy the last remaining ticket simultaneously.
     - **Resolution:** Solved via EF Core's Optimistic Concurrency Control (`[ConcurrencyCheck]`), throwing `DbUpdateConcurrencyException` to safely reject overlapping transactions instead of overselling.
+5.  **Azure Load Balancer IP Masking & Rate Limiting Conflict:** During cloud deployment, the Ocelot rate limiter began blocking users globally after a single user exhausted their 3 calls. This occurred because Azure's Load Balancer masked the actual client IPs, causing Ocelot to see either the single proxy IP or treat all traffic as a single anonymous entity.
+    - **Resolution:** Implemented `ForwardedHeaders` middleware in `Program.cs` to capture the `X-Forwarded-For` header from Azure's proxy. Extracted the true client IP and injected it into a custom `X-Client-IP` HTTP header. By configuring `ocelot.json` to track `"ClientIdHeader": "X-Client-IP"`, the system successfully enforced the strict "3 calls/day" limit accurately on a per-user (IP) basis.
 
 ---
 

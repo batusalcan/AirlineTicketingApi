@@ -100,6 +100,7 @@
   "GlobalConfiguration": {
     "BaseUrl": "batu-airline-gateway-final-d0hbhnc6c8fadgee.italynorth-01.azurewebsites.net",
     "RateLimitOptions": {
+      "ClientIdHeader": "X-Client-IP",
       "QuotaExceededMessage": "API calls quota exceeded! maximum admitted 3 per 1d.",
       "HttpStatusCode": 429
     }
