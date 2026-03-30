@@ -56,6 +56,18 @@ The solution strictly follows an **N-Tier (Layered) Architecture** to ensure a c
 3. **Data Access Layer (Repository & EF Core):** - **Role:** Responsible for all direct interactions with the MySQL database. It translates the object-oriented C# models into relational database queries.
    - **Implementation:** Managed by `ApplicationDbContext` using Entity Framework Core. It handles complex transactional operations, ensuring that actions like decreasing capacity and saving a ticket are committed atomically.
 
+### 📂 API Folder Mapping
+
+| Folder Name    | Architectural Layer      | Purpose / Content                                                                         |
+| :------------- | :----------------------- | :---------------------------------------------------------------------------------------- |
+| `Controllers/` | **Presentation Layer**   | API endpoints, handling HTTP requests, and returning standard responses.                  |
+| `Middlewares/` | **Presentation Layer**   | Global Exception Handler for secure, centralized error logging.                           |
+| `Services/`    | **Business Logic Layer** | Core business rules (`FlightService`, `TicketService`), Interfaces, and Strategy Parsers. |
+| `Data/`        | **Data Access Layer**    | `ApplicationDbContext` functioning as the EF Core Unit of Work/Repository.                |
+| `Migrations/`  | **Data Access Layer**    | EF Core code-first database migration history and snapshots.                              |
+| `Models/`      | **Domain Layer**         | Database entity representations (`Flight`, `Ticket`, `User`).                             |
+| `DTOs/`        | **Cross-Cutting**        | Data Transfer Objects defining the strict API request/response contracts.                 |
+
 ## 🏛️ Architectural Decisions & Design Patterns
 
 To complement the N-Layered structure, the project utilizes several gang-of-four design patterns and SOLID principles:
